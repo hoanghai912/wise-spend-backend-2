@@ -2,15 +2,18 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 
 
-@Schema({
-  
-})
+@Schema()
 export class User {
   @Prop()
-  username: string;
+    firstName: string;
 
-  @Prop()
-  email: string;
+    @Prop()
+    lastName: string;
+
+
+  @Prop({ unique: true })
+  // @Index({ unique: true })
+  username: string;
 
   @Prop()
   password: string;
@@ -18,3 +21,7 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+// function Index(arg0: { unique: boolean; }): (target: User, propertyKey: "username") => void {
+//   throw new Error('Function not implemented.');
+// }
+

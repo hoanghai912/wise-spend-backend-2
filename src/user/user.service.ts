@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from './schemas/user.schema';
-
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -17,7 +17,26 @@ export class UserService {
   }
 
   async create(user: User): Promise<User> {
-    const res = await this.userModel.create(user);
+    const res = await this.userModel.create(
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        
+        password: await bcrypt.hash(user.password,10)
+      }
+    )
+    // try {
+    //   await res.save()
+    // } catch (error) {
+    //   if(error.message.includes('username')){
+    //     throw new HttpException('username has been taken',404)
+    //   }
+    //   if(error.message.includes('email')){
+    //     throw new HttpException('email has been taken',404)
+    //   }
+    // }
+    ;
     return res;
   }
 
