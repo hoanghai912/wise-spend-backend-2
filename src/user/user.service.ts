@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.userModel.find();
+    const users = await this.userModel.find().select('-password -__v');
     return users;
   }
 
