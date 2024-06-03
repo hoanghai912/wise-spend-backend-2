@@ -7,8 +7,11 @@ export class UpdateUserDto {
     @ApiProperty()
     readonly lastName: string;
     
+    // @ApiProperty()
+    // readonly username: string;
+
     @ApiProperty()
-    readonly username: string;
+    readonly email: string;
     
     @ApiProperty()
     readonly password: string;

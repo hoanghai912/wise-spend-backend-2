@@ -1,4 +1,4 @@
-import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { User } from './schemas/user.schema';
@@ -12,7 +12,7 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<User[]> {
-    const users = await this.userModel.find().select('-password -__v');
+    const users = await this.userModel.find().select('-__v');
     return users;
   }
 
@@ -21,7 +21,8 @@ export class UserService {
       {
         firstName: user.firstName,
         lastName: user.lastName,
-        username: user.username,
+        // username: user.username,
+        email: user.email,
         
         password: await bcrypt.hash(user.password,10)
       }
@@ -59,5 +60,45 @@ export class UserService {
 
   async deleteById(id: string): Promise<User> {
     return await this.userModel.findByIdAndDelete(id);
+  }
+
+  async login(email:string, password:string): Promise<{message:string}> {
+    const res = await this.userModel
+      .findOne({ email: email })
+      .select('-email -firstName -lastName -__v -_id +password');
+    if (!res) {
+      throw new HttpException('Email not found', 404);
+    }
+    else {
+      const isMatch = await bcrypt.compare(password, res.password)
+      if (!isMatch) {
+        console.log("Wrong password")
+        throw new HttpException('Wrong password', 401);
+      }
+      else {
+        return {'message': 'successful'}
+      }
+    }
+  }
+
+  async signup(email:string, password:string): Promise<{message:string}> {
+    const res = await this.userModel
+      .findOne({ email: email })
+      .select('+email -firstName -lastName -__v -_id -password');
+    if (res) {
+      throw new HttpException('Email has been taken', HttpStatus.BAD_REQUEST);
+    }
+    else {
+      const res = await this.userModel.create(
+        {
+          firstName: 'undefined',
+          lastName: 'undefined',
+          email: email,
+          password: await bcrypt.hash(password,10)
+        }
+      )
+
+      return {'message': 'successful'}
+    }
   }
 }

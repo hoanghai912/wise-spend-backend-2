@@ -5,15 +5,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema()
 export class User {
   @Prop()
-    firstName: string;
+  firstName: string;
 
-    @Prop()
-    lastName: string;
+  @Prop()
+  lastName: string;
 
 
-  @Prop({ unique: true })
-  // @Index({ unique: true })
-  username: string;
+  // @Prop({ unique: true })
+  // // @Index({ unique: true })
+  // username: string;
+  @Prop({unique:true})
+  email: string;
 
   @Prop()
   password: string;

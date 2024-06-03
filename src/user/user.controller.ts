@@ -56,5 +56,25 @@ import { ApiTags } from '@nestjs/swagger';
     ): Promise<User> {
       return this.userService.deleteById(id);
     }
+
+    @Post('/login')
+    async login(
+      @Body('email')
+      email: string,
+      @Body('password')
+      password: string,
+    ): Promise<{message:string}> {
+      return this.userService.login(email, password);
+    }
+
+    @Post('/signup')
+    async signup(
+      @Body('email')
+      email: string,
+      @Body('password')
+      password: string,
+    ): Promise<{message:string}> {
+      return this.userService.signup(email, password);
+    }
   }
   
