@@ -27,8 +27,11 @@ import { ApiTags } from '@nestjs/swagger';
     async createTransaction(
       @Body()
       transaction: CreateTransactionDto,
-    ): Promise<Transaction> {
-      return this.transactionService.create(transaction);
+    ): Promise<{message:string}> {
+      this.transactionService.create(transaction);
+      // return this.transactionService.create(transaction);
+      return {'message':'successful'}
+
     }
   
     @Get(':id')
@@ -37,6 +40,14 @@ import { ApiTags } from '@nestjs/swagger';
       id: string,
     ): Promise<Transaction> {
       return this.transactionService.findById(id);
+    }
+
+    @Get('/user_id/:user_id')
+    async getTransactionByUser(
+      @Param('user_id')
+      user_id: string,
+    ): Promise<Transaction[]> {
+      return this.transactionService.findByUserId(user_id);
     }
 
     @Put(':id')

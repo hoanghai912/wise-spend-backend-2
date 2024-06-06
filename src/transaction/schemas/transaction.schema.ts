@@ -11,17 +11,23 @@ export class Transaction {
     @Prop()
     amount: number;
 
-    @Prop()
-    isIncome: boolean;
+    // @Prop()
+    // isIncome: boolean;
 
-    @Prop({ type: Types.ObjectId, ref: 'Category' })
-    category_id: Types.ObjectId;
+    // @Prop({ type: Types.ObjectId, ref: 'Category' })
+    // category_id: Types.ObjectId;
+    @Prop()
+    category: string;
+
+    @Prop()
+    description: string;
+
 
     @Prop({ type: Types.ObjectId, ref: 'User' })
     user_id: Types.ObjectId;
 
     @Prop()
-    date: Date;
+    date: string;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

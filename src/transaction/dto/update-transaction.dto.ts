@@ -6,20 +6,22 @@ import { User } from "src/user/schemas/user.schema";
 export class UpdateTransactionDto {
     @ApiProperty()
     readonly amount: number;
-
+  
+    // @ApiProperty()
+    // readonly isIncome: boolean;
+    // // readonly category: Category;
+    // // readonly user: User;
+  
     @ApiProperty()
-    readonly isIncome: boolean;
-    // readonly category: Category;
-    // readonly user: User;
-
+    readonly date: string;
+  
     @ApiProperty()
-    readonly date: Date;
-
-    @ApiProperty()
-    readonly category_id: Types.ObjectId;
-
+    readonly category: string;
+  
     @ApiProperty()
     readonly user_id: Types.ObjectId;
+  
+    @ApiProperty()
+    readonly description: string;
 }
-    
 

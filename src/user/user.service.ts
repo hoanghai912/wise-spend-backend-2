@@ -62,10 +62,10 @@ export class UserService {
     return await this.userModel.findByIdAndDelete(id);
   }
 
-  async login(email:string, password:string): Promise<{message:string}> {
+  async login(email:string, password:string): Promise<{message:string, _id:string}> {
     const res = await this.userModel
       .findOne({ email: email })
-      .select('-email -firstName -lastName -__v -_id +password');
+      .select('-email -firstName -lastName -__v +_id +password');
     if (!res) {
       throw new HttpException('Email not found', 404);
     }
@@ -76,7 +76,7 @@ export class UserService {
         throw new HttpException('Wrong password', 401);
       }
       else {
-        return {'message': 'successful'}
+        return {'message': 'successful', '_id': res._id.toString()}
       }
     }
   }

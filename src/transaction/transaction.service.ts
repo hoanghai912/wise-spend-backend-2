@@ -15,6 +15,12 @@ export class TransactionService {
     const transactions = await this.transactionModel.find();
     return transactions;
   }
+
+  async findByUserId(p_user_id: string): Promise<Transaction[]> {
+    const transactions = await this.transactionModel.find({user_id: p_user_id});
+    return transactions;
+  }
+
   async create(transaction: Transaction): Promise<Transaction> {
     const res = await this.transactionModel.create(transaction);
     return res;
